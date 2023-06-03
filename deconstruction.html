@@ -8,33 +8,72 @@
 </head>
 <body>
 
-    <svg width="512" height="512"> 
+    <svg width="512" height="512" id="svg"> 
         <circle cx="256" cy="256" r="256" fill="red" fill-opacity="1">
     </svg>
 
     <script>
 
-    function assignRollovers()
-    {
+    const svgns = "http://www.w3.org/2000/svg";
+    const svg = document.getElementById("svg");
+
+    let randomColour = function() {
+        return Math.floor(Math.random()*16777215).toString(16);
+    }
+
+    let assignRollovers = function() {
+
         let circles = document.getElementsByTagName('circle');
-        
 
         [...circles].forEach(circle => {
+
 			circle.addEventListener("click", function(event){
 
-console.log(event.target);
+                event.target.remove();
+                
+                let newRadius = event.target.getAttribute('r') / 2;
+                let newCx = event.target.getAttribute('cx') - newRadius;
+                let newCy = event.target.getAttribute('cy') - newRadius;
 
-});
-	});
+                let topLeftCircle = document.createElementNS(svgns, 'circle');
+                topLeftCircle.setAttributeNS(null, 'cx', newCx);
+                topLeftCircle.setAttributeNS(null, 'cy', newCy);
+                topLeftCircle.setAttributeNS(null, 'r', newRadius);
+                topLeftCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
+                svg.appendChild(topLeftCircle);
 
-    /*
+                let topRightCircle = document.createElementNS(svgns, 'circle');
+                topRightCircle.setAttributeNS(null, 'cx', newCx + newRadius * 2);
+                topRightCircle.setAttributeNS(null, 'cy', newCy);
+                topRightCircle.setAttributeNS(null, 'r', newRadius);
+                topRightCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
+                svg.appendChild(topRightCircle);
+
+                let bottomLeftCircle = document.createElementNS(svgns, 'circle');
+                bottomLeftCircle.setAttributeNS(null, 'cx', newCx);
+                bottomLeftCircle.setAttributeNS(null, 'cy', newCy + newRadius * 2);
+                bottomLeftCircle.setAttributeNS(null, 'r', newRadius);
+                bottomLeftCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
+                svg.appendChild(bottomLeftCircle);
+
+                let bottomRightCircle = document.createElementNS(svgns, 'circle');
+                bottomRightCircle.setAttributeNS(null, 'cx', newCx + newRadius * 2);
+                bottomRightCircle.setAttributeNS(null, 'cy', newCy + newRadius * 2);
+                bottomRightCircle.setAttributeNS(null, 'r', newRadius);
+                bottomRightCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
+                svg.appendChild(bottomRightCircle); 
+
+            });
+
+	    });
+
+        /*
         circles.forEach(circle => {
-	        console.log('fakeImage: ', fakeImage);
-
-            
+	        console.log('fakeImage: ', fakeImage);     
         });
         */
-    }
+
+    };
 
     assignRollovers();
 
