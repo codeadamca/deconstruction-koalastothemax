@@ -7,6 +7,13 @@ This is a deconstruction of the [Koalas to the Max](https://www.koalastothemax.c
 Current result is available here:  
 https://codeadamca.github.io/javascript-canvas-koalastothemax/deconstruction.html
 
+Original image was downloaded from here:  
+https://www.pexels.com/photo/pink-and-white-flower-with-white-background-2512281/
+
+Using Photoshop, the image was converted to a 128 x 128 pixel GIF restricted to 64 different colours. 
+
+![Converted Flower](flower.gif)
+
 ***
 
 ## Repo Resources
