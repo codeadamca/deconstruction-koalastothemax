@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Koalas to the Max Deconstruction</title>
+</head>
+<body>
+
+    <svg width="512" height="512"> 
+        <circle cx="256" cy="256" r="256" fill="red" fill-opacity="1">
+    </svg>
+
+    <script>
+
+    function assignRollovers()
+    {
+        let circles = document.getElementsByTagName('circle');
+        
+
+        [...circles].forEach(circle => {
+			circle.addEventListener("click", function(event){
+
+console.log(event.target);
+
+});
+	});
+
+    /*
+        circles.forEach(circle => {
+	        console.log('fakeImage: ', fakeImage);
+
+            
+        });
+        */
+    }
+
+    assignRollovers();
+
+        </script>
+
+    
+</body> 
+</html>
