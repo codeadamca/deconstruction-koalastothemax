@@ -24,6 +24,7 @@
         max-width: 100%;
         max-height: 100%;
     }
+
     canvas {
         width: 128px;
         height: 128px;
@@ -53,11 +54,16 @@
     let image = new Image();
     image.crossOrigin = "Anonymous";
     image.onload = () => {
+
         ctx.drawImage(image, 0, 0);
         imageToMatrix();
+
+        // Set the original colour and add rolloer event
         let colour = getColour(0, 0, 128, 128);
         let circle = document.getElementById("initial");
         circle.setAttribute("fill", colour);
+        circle.addEventListener("mouseover", fourCircles);   
+
     };
     image.src = "flower.gif";
 
@@ -126,12 +132,16 @@
     const svgns = "http://www.w3.org/2000/svg";
     const svg = document.getElementById("svg");
 
+    // Calculate ratio of image to svg
     let ratio = 1024 / 128;
 
+    // Define a function to generate a random colour
+    // This was only used when testing
     let randomColour = function() {
         return Math.floor(Math.random()*16777215).toString(16);
     }
 
+    // This function removed the old circle and repaces it woth four new circles using the proper colour
     let fourCircles = function(event) {
 
         // bottomLeftCircle.setAttributeNS(null, "style", "fill: #" + randomColour() + "; fill-opacity: 1;");
@@ -193,12 +203,6 @@
         }
 
     };
-
-    let circle = document.getElementsByTagName("circle")[0];
-    circle.addEventListener("mouseover", fourCircles);   
-
-
-    // assignRollovers();
 
     </script>
 
