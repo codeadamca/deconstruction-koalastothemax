@@ -10,19 +10,21 @@ https://codeadamca.github.io/javascript-canvas-koalastothemax/deconstruction.htm
 Original image was downloaded from here:  
 https://www.pexels.com/photo/pink-and-white-flower-with-white-background-2512281/
 
-Using Photoshop, the image was converted to a 128 x 128 pixel GIF restricted to 64 different colours. 
+Using Photoshop, the image was converted to a 128 x 128 pixel GIF restricted to 64 different colours.
 
-![Converted Flower](flower.gif)
+![Converted Flower](flower-1.gif)
+![Converted Flower](flower-2.gif)
+![Converted Flower](flower-3.gif)
 
 Current result is available here:  
 https://codeadamca.github.io/deconstruction-koalastothemax/deconstruction.html
 
-***
+---
 
 ## Repo Resources
 
-* [Koalas to the Max](https://koalastothemax.com/)
-* [The Useless Web](https://theuselessweb.com/)
+- [Koalas to the Max](https://koalastothemax.com/)
+- [The Useless Web](https://theuselessweb.com/)
 
 <a href="https://codeadam.ca">
 <img src="https://codeadam.ca/images/code-block.png" width="100">
