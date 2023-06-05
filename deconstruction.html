@@ -20,6 +20,16 @@
         width: 100vw;
     }
 
+    svg {
+        max-width: 100%;
+        max-height: 100%;
+    }
+    canvas {
+        width: 128px;
+        height: 128px;
+        display: none;
+    }
+
     </style>
 
 </head>
@@ -27,16 +37,96 @@
 
     <div class="container">
         <svg width="1024" height="1024" id="svg"> 
-            <circle cx="512" cy="512" r="512" fill="red" fill-opacity="1" data-depth="1">
+            <circle cx="512" cy="512" r="512" fill-opacity="1" data-depth="1" id="initial">
         </svg>
     </div>
 
+    <canvas width="128" height="128" id="canvas">
+
     <script>
 
+    // ************************************************************
+    // Add image to the canvas
+    const canvas = document.getElementById("canvas");
+    const ctx = canvas.getContext("2d");
+
+    let image = new Image();
+    image.crossOrigin = "Anonymous";
+    image.onload = () => {
+        ctx.drawImage(image, 0, 0);
+        imageToMatrix();
+        let colour = getColour(0, 0, 128, 128);
+        let circle = document.getElementById("initial");
+        circle.setAttribute("fill", colour);
+    };
+    image.src = "flower.gif";
+
+    ctx.drawImage(image, 0, 0);
+
+    // ************************************************************
+    // Convert image to a multidimension array
+    let colourMatrix = new Array();
+
+    let imageToMatrix = function() {
+
+        let width = 128;
+        let height = 128;
+        let imageData = ctx.getImageData(0, 0, width, height).data;
+
+        for(let i = 0; i < imageData.length; i += 4)
+        {
+            let row = i / 4;
+            let col = i / 4;
+            let colour = "rgb(" + imageData[i] + "," + imageData[i+1] + "," + imageData[i+2] + "," + imageData[i+3] + ")";
+            colourMatrix.push(colour);
+        }
+
+    };
+
+    let getColour = function(x, y, radius) {
+
+        console.log(x + " - " + y + " - " + radius);
+
+        let colourPool = [];
+
+        colourMatrix.forEach(function(colour, index) {
+            
+            let col = index % 128;
+            let row = Math.floor(index / 128);
+
+            if(col >= x && col < x + radius && row >= y && row < y + radius )
+            {
+                if(colourPool[colour] > 0) colourPool[colour] += 1;
+                else colourPool[colour] = 1;
+            }
+
+        });
+
+        console.log(colourPool);
+
+        let maxColour = null;
+
+        for(let key of Object.keys(colourPool))
+        {
+
+            if(maxColour == null || colourPool[key] < colourPool[key]) {
+                maxColour = key;
+            }
+
+        }
+
+        console.log(maxColour);
+
+        return maxColour;
+
+    }
+
+    // ************************************************************
+    // Add interactivity to circle
     const svgns = "http://www.w3.org/2000/svg";
     const svg = document.getElementById("svg");
 
-    let counter = 8;
+    let ratio = 1024 / 128;
 
     let randomColour = function() {
         return Math.floor(Math.random()*16777215).toString(16);
@@ -44,44 +134,54 @@
 
     let fourCircles = function(event) {
 
-        let newRadius = event.target.getAttribute('r') / 2;
-        let newCx = event.target.getAttribute('cx') - newRadius;
-        let newCy = event.target.getAttribute('cy') - newRadius;
-        let newDepth = parseInt(event.target.getAttribute('data-depth')) + 1;
+        // bottomLeftCircle.setAttributeNS(null, "style", "fill: #" + randomColour() + "; fill-opacity: 1;");
 
-        event.target.removeAttribute('onclick');
+        let newRadius = event.target.getAttribute("r") / 2;
+        let newCx = event.target.getAttribute("cx") - newRadius;
+        let newCy = event.target.getAttribute("cy") - newRadius;
+        let newDepth = parseInt(event.target.getAttribute("data-depth")) + 1;
+
+        event.target.removeAttribute("onclick");
         event.target.remove();
 
-        let topLeftCircle = document.createElementNS(svgns, 'circle');
-        topLeftCircle.setAttributeNS(null, 'cx', newCx);
-        topLeftCircle.setAttributeNS(null, 'cy', newCy);
-        topLeftCircle.setAttributeNS(null, 'r', newRadius);
-        topLeftCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
-        topLeftCircle.setAttributeNS(null, 'data-depth', newDepth);
+        let topLeftCircle = document.createElementNS(svgns, "circle");
+        topLeftCircle.setAttributeNS(null, "cx", newCx);
+        topLeftCircle.setAttributeNS(null, "cy", newCy);
+        topLeftCircle.setAttributeNS(null, "r", newRadius);
+        topLeftCircle.setAttributeNS(null, "style", "fill: " + 
+            getColour((newCx - newRadius) / 8, (newCy - newRadius) / 8, (newRadius * 2) / 8) + 
+            "; fill-opacity: 1;");
+        topLeftCircle.setAttributeNS(null, "data-depth", newDepth);
         svg.appendChild(topLeftCircle);
 
-        let topRightCircle = document.createElementNS(svgns, 'circle');
-        topRightCircle.setAttributeNS(null, 'cx', newCx + newRadius * 2);
-        topRightCircle.setAttributeNS(null, 'cy', newCy);
-        topRightCircle.setAttributeNS(null, 'r', newRadius);
-        topRightCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
-        topRightCircle.setAttributeNS(null, 'data-depth', newDepth);
+        let topRightCircle = document.createElementNS(svgns, "circle");
+        topRightCircle.setAttributeNS(null, "cx", newCx + newRadius * 2);
+        topRightCircle.setAttributeNS(null, "cy", newCy);
+        topRightCircle.setAttributeNS(null, "r", newRadius);
+        topRightCircle.setAttributeNS(null, "style", "fill: " + 
+            getColour((newCx + newRadius) / 8, (newCy - newRadius) / 8, (newRadius * 2) / 8) + 
+            "; fill-opacity: 1;");
+        topRightCircle.setAttributeNS(null, "data-depth", newDepth);
         svg.appendChild(topRightCircle);
 
-        let bottomLeftCircle = document.createElementNS(svgns, 'circle');
-        bottomLeftCircle.setAttributeNS(null, 'cx', newCx);
-        bottomLeftCircle.setAttributeNS(null, 'cy', newCy + newRadius * 2);
-        bottomLeftCircle.setAttributeNS(null, 'r', newRadius);
-        bottomLeftCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
-        bottomLeftCircle.setAttributeNS(null, 'data-depth', newDepth);
+        let bottomLeftCircle = document.createElementNS(svgns, "circle");
+        bottomLeftCircle.setAttributeNS(null, "cx", newCx);
+        bottomLeftCircle.setAttributeNS(null, "cy", newCy + newRadius * 2);
+        bottomLeftCircle.setAttributeNS(null, "r", newRadius);
+        bottomLeftCircle.setAttributeNS(null, "style", "fill: " + 
+            getColour((newCx - newRadius) / 8, (newCy + newRadius) / 8, (newRadius * 2) / 8) + 
+            "; fill-opacity: 1;");
+        bottomLeftCircle.setAttributeNS(null, "data-depth", newDepth);
         svg.appendChild(bottomLeftCircle);
 
-        let bottomRightCircle = document.createElementNS(svgns, 'circle');
-        bottomRightCircle.setAttributeNS(null, 'cx', newCx + newRadius * 2);
-        bottomRightCircle.setAttributeNS(null, 'cy', newCy + newRadius * 2);
-        bottomRightCircle.setAttributeNS(null, 'r', newRadius);
-        bottomRightCircle.setAttributeNS(null, 'style', 'fill: #' + randomColour() + '; fill-opacity: 1;' );
-        bottomRightCircle.setAttributeNS(null, 'data-depth', newDepth);
+        let bottomRightCircle = document.createElementNS(svgns, "circle");
+        bottomRightCircle.setAttributeNS(null, "cx", newCx + newRadius * 2);
+        bottomRightCircle.setAttributeNS(null, "cy", newCy + newRadius * 2);
+        bottomRightCircle.setAttributeNS(null, "r", newRadius);
+        bottomRightCircle.setAttributeNS(null, "style", "fill: " + 
+            getColour((newCx + newRadius) / 8, (newCy - newRadius) / 8, (newRadius * 2) / 8) + 
+            "; fill-opacity: 1;");
+        bottomRightCircle.setAttributeNS(null, "data-depth", newDepth);
         svg.appendChild(bottomRightCircle); 
 
         if(newDepth < 7)
@@ -94,8 +194,8 @@
 
     };
 
-    let circle = document.getElementsByTagName('circle')[0];
-    circle.addEventListener('mouseover', fourCircles);   
+    let circle = document.getElementsByTagName("circle")[0];
+    circle.addEventListener("mouseover", fourCircles);   
 
 
     // assignRollovers();
