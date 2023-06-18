@@ -13,7 +13,7 @@ Using Photoshop, the image was converted to a 128 x 128 pixel GIF restricted to 
 ![Converted Flower](flower-2.gif)
 ![Converted Flower](flower-3.gif)
 
-> Current result is available at 
+> Current result is available at  
 > https://codeadamca.github.io/deconstruction-koalastothemax/deconstruction.html
 
 ---
