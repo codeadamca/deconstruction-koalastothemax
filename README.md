@@ -23,6 +23,7 @@ Using Photoshop, the image was converted to a 128 x 128 pixel GIF restricted to 
 - [Koalas to the Max](https://koalastothemax.com/)
 - [The Useless Web](https://theuselessweb.com/)
 
+<br>
 <a href="https://codeadam.ca">
-<img src="https://codeadam.ca/images/code-block.png" width="100">
+<img src="https://cdn.codeadam.ca/images@1.0.0/codeadam-logo-coloured-horizontal.png" width="200">
 </a>
